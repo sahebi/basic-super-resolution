@@ -38,6 +38,9 @@ parser.add_argument('--weight_decay',   type=float, default=0.01, help='Weight D
 
 # Optimization Scheduler
 parser.add_argument('--schduler',       type=str, default='default', help='Scheduler type')
+
+
+parser.add_argument('--iter',           type=int, default=3, help='Run Iteration')
 args = parser.parse_args()
 
 def main():
@@ -48,12 +51,10 @@ def main():
 
     training_data_loader = DataLoader(dataset=train_set, batch_size=args.batchSize, shuffle=True)
     testing_data_loader  = DataLoader(dataset=test_set,  batch_size=args.testBatchSize, shuffle=False)
-    for iii in [1,2,3]:
-        args.logprefix = f'{args.logprefix}_it{iii}'
+    for i in range(args.iter):
+        args.logprefix = f'{args.logprefix}_it{i}'
         for args.model in ['sub', 'srcnn', 'srcnnt', 'carn', 'vdsr', 'edsr', 'fsrcnn', 'drcn', 'srgan', 'dbpn', 'memnet']:
             for args.optim in ['adam', 'adamax', 'lamb', 'sgd', 'asgd', 'adadelta', 'adagrad', 'rmsprop', 'rprop']:
-        # for args.model in ['srgan','dbpn','memnet','drcn','edsr']:#, , ,  ]:
-        #     for args.optim in ['adam', 'adamax', 'lamb', 'sgd', 'asgd', 'adadelta', 'adagrad', 'rmsprop', 'rprop']:
                 print(args.model, args.optim)
                 if args.model == 'sub':
                     model = SubPixelTrainer(args, training_data_loader, testing_data_loader)
