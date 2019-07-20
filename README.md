@@ -1,3 +1,9 @@
+### Basic Super Resolution
+
+Thid git cloned from https://github.com/icpm/super-resolution change some modifications.
+
+-----------------
+
 *Train Model*
 python train.py --logprefix testmodel -uf 4 --dataset BSDS300 --batchSize 16 --testBatchSize 8 --nEpochs 1 --model srcnnt
 python train.py --logprefix testmodel -uf 4 --dataset BSDS300 --batchSize 16 --testBatchSize 8 --nEpochs 1 --model sub
