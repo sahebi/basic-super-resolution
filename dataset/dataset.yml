@@ -1,0 +1,59 @@
+{
+  'BSDS300': {
+    path: './dataset/BSDS300/images',
+    train: '/train',
+    test: '/test',
+    val: '',
+    url: "http://www2.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/BSDS300-images.tgz"
+  },
+  'COCO': {
+    path: 'E:\\dataset\\CoCo',
+    train: '\\test2017',
+    test: '\\test2017',
+    val: '',
+    url: "http://www2.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/BSDS300-images.tgz"
+  },
+  'BSR': {
+    path: './dataset/BSR/BSDS500/data/images',
+    train: '/train',
+    test: '/test',
+    valid: '/val'
+  },
+  'BSDS100': {
+    path: './dataset/BSDS100',
+    train: '/',
+    test: '/',
+    valid: ''
+  },
+  'Manga109': {
+    path: './dataset/Manga109',
+    train: '/train',
+    test: '/test',
+    valid: ''
+  },
+  'Set5': {
+    path: './dataset/Set5',
+    train: '',
+    test: '/',
+    valid: ''
+  },
+  'Set14': {
+    path: './dataset/Set14',
+    train: '',
+    test: '/',
+    valid: ''
+  },
+  'TestImages': {
+    path: './dataset/TestImages',
+    train: '',
+    test: '/',
+    valid: ''
+  },
+  'Urban100': {
+    path: './dataset/Urban100',
+    train: '',
+    test: '/',
+    valid: ''
+  }
+
+}
