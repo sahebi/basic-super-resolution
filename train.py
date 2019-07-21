@@ -33,7 +33,7 @@ parser.add_argument('--seed',           type=int, default=123, help='random seed
 parser.add_argument('--chanel',         type=int, default=3, help='random seed to use. Default=123')
 
 # Optimization Parameter
-parser.add_argument('--optim',          type=str, help='Optimizer Name, sgd, adam, lamb')
+parser.add_argument('--optim',          type=str, default='adam', help='Optimizer Name, sgd, adam, lamb')
 parser.add_argument('--momentum',       type=float, default=0.9, help='Momentum')
 parser.add_argument('--weight_decay',   type=float, default=0.01, help='Weight Decay')
 
