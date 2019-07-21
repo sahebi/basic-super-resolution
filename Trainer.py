@@ -4,7 +4,8 @@ import collections
 import torch
 import os, errno
 
-from optimizer_lib.lamb.pytorch_lamb import Lamb, log_lamb_rs
+
+from .optimizer_lib.lamb.pytorch_lamb import Lamb, log_lamb_rs
 
 CHECKPOINT_DIR = 'checkpoints'
 class Trainer(object):
