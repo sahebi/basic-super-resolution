@@ -54,7 +54,7 @@ def main():
     for i in range(args.iter):
         args.logprefix = f'{args.logprefix}_it{i}'
         for args.model in ['sub', 'srcnn', 'srcnnt', 'carn', 'vdsr', 'edsr', 'fsrcnn', 'drcn', 'srgan', 'dbpn', 'memnet']:
-            for args.optim in ['adam', 'adamax', 'lamb', 'sgd', 'asgd', 'adadelta', 'adagrad', 'rmsprop', 'rprop']:
+            for args.optim in ['lamb', 'adam', 'adamax', 'sgd', 'asgd', 'adadelta', 'adagrad', 'rmsprop', 'rprop']:
                 print(args.model, args.optim)
                 if args.model == 'sub':
                     model = SubPixelTrainer(args, training_data_loader, testing_data_loader)

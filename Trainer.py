@@ -9,7 +9,7 @@ current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfra
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir) 
 
-from optimizer_lib.lamb.pytorch_lamb import Lamb, log_lamb_rs
+from optimizerlib.lamb.lamb import Lamb, log_lamb_rs
 
 CHECKPOINT_DIR = 'checkpoints'
 class Trainer(object):
