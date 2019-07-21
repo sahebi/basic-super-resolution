@@ -1,0 +1,2 @@
+Pattern of result directory:
+	

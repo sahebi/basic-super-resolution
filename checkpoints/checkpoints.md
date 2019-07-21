@@ -1,0 +1,1 @@
+Pattern of checkpoints directory:
