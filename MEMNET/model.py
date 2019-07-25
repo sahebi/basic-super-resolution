@@ -14,7 +14,7 @@ class Net(nn.Module):
         )
 
     def forward(self, x):
-        # x = x.contiguous()
+        x = x.contiguous()
         residual = x
         out = self.feature_extractor(x)
         ys = [out]
@@ -72,6 +72,6 @@ class ResidualBlock(torch.nn.Module):
 class BNReLUConv(nn.Sequential):
     def __init__(self, in_channels, channels, k=3, s=1, p=1, inplace=True):
         super(BNReLUConv, self).__init__()
-        self.add_module('bn', nn.BatchNorm2d(in_channels))
+        self.add_module('bn',   nn.BatchNorm2d(in_channels))
         self.add_module('relu', nn.ReLU(inplace=inplace))
         self.add_module('conv', nn.Conv2d(in_channels, channels, k, s, p, bias=False))

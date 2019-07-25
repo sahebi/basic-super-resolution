@@ -53,9 +53,7 @@ class DRCNTrainer(Trainer):
         # setup optimizer and scheduler
         param_groups = [{'params': list(self.model.parameters())}]
         param_groups += [{'params': [self.model.w]}]
-        self.set_optimizer() #==> Add
-        self.scheduler = optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[50, 75, 100], gamma=0.5)  # lr decay
-        self.save_path = self.checkpoint_path() #==> Add
+        self.set_optimizer()
 
     def img_preprocess(self, data, interpolation='bicubic'):
         if interpolation == 'bicubic':
@@ -116,10 +114,10 @@ class DRCNTrainer(Trainer):
 
             train_loss += loss.item()
             self.optimizer.step()
-            progress_bar(batch_num, len(self.training_loader), 'Loss: %.4f' % (train_loss / (batch_num + 1)))
+            total_time = progress_bar(batch_num, len(self.training_loader), 'Loss: %.4f' % (train_loss / (batch_num + 1)))
 
         avg_loss = train_loss / len(self.training_loader)
-        return avg_loss
+        return [avg_loss, total_time]
 
     def test(self):
         """
@@ -136,10 +134,10 @@ class DRCNTrainer(Trainer):
                 mse = self.criterion(prediction, target)
                 psnr = 10 * log10(1 / mse.item())
                 avg_psnr += psnr
-                progress_bar(batch_num, len(self.testing_loader), 'PSNR: %.4f' % (avg_psnr / (batch_num + 1)))
+                total_time = progress_bar(batch_num, len(self.testing_loader), 'PSNR: %.4f' % (avg_psnr / (batch_num + 1)))
 
         avg_psnr = avg_psnr / len(self.testing_loader)
-        return avg_psnr
+        return [avg_psnr, total_time]
 
     def run(self):
         self.build_model()

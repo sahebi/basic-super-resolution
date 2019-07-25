@@ -7,10 +7,10 @@ import torch
 import torch.backends.cudnn as cudnn
 
 from SRCNNT.model import Net
-from progress_bar import progress_bar
+from progress_bar import progress_bar, format_time
 
 from Trainer import Trainer
-
+import time
 class SRCNNTTrainer(Trainer):
     def __init__(self, config, training_loader, testing_loader):
         super(SRCNNTTrainer, self).__init__()
@@ -54,10 +54,10 @@ class SRCNNTTrainer(Trainer):
             train_loss += loss.item()
             loss.backward()
             self.optimizer.step()
-            progress_bar(batch_num, len(self.training_loader), 'Loss: %.4f' % (train_loss / (batch_num + 1)))
+            total_time = progress_bar(batch_num, len(self.training_loader), 'Loss: %.4f' % (train_loss / (batch_num + 1)))
 
         avg_loss = train_loss / len(self.training_loader)
-        return avg_loss
+        return [avg_loss, total_time]
 
     def test(self):
         self.model.eval()
@@ -70,10 +70,10 @@ class SRCNNTTrainer(Trainer):
                 mse = self.criterion(prediction, target)
                 psnr = 10 * log10(1 / mse.item())
                 avg_psnr += psnr
-                progress_bar(batch_num, len(self.testing_loader), 'PSNR: %.4f' % (avg_psnr / (batch_num + 1)))
-
+                total_time = progress_bar(batch_num, len(self.testing_loader), 'PSNR: %.4f' % (avg_psnr / (batch_num + 1)))
         avg_psnr = avg_psnr / len(self.testing_loader)
-        return avg_psnr
+        return [avg_psnr, total_time]
+    
 
     def run(self):
         self.build_model()

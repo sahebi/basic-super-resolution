@@ -44,14 +44,24 @@ args = parser.parse_args()
 def main():
     print('Loading dataset')
 
-    train_set            = data.get_data(dataset_name=args.dataset, data_type='train', upscale_factor=args.upscale_factor)
-    test_set             = data.get_data(dataset_name=args.dataset, data_type='test',  upscale_factor=args.upscale_factor)
+    if args.model == 'carn':
+        train_set            = data.get_data(dataset_name=args.dataset, data_type='train', upscale_factor=args.upscale_factor, color_system='RGB')
+        test_set             = data.get_data(dataset_name=args.dataset, data_type='test',  upscale_factor=args.upscale_factor, color_system='RGB')
 
-    # train_set            = data.get_training_set(upscale_factor=args.upscale_factor)
-    # test_set             = data.get_test_set(upscale_factor=args.upscale_factor)
-    
-    training_data_loader = DataLoader(dataset=train_set, batch_size=args.batchSize, shuffle=True)
-    testing_data_loader  = DataLoader(dataset=test_set,  batch_size=args.testBatchSize, shuffle=False)
+        training_data_loader = DataLoader(dataset=train_set, batch_size=args.batchSize, shuffle=True)
+        testing_data_loader  = DataLoader(dataset=test_set,  batch_size=args.testBatchSize, shuffle=False)    
+    elif args.model == 'memnet':
+        train_set            = data.get_data(dataset_name=args.dataset, data_type='train', upscale_factor=args.upscale_factor, sample_size='BILINEAR')
+        test_set             = data.get_data(dataset_name=args.dataset, data_type='test',  upscale_factor=args.upscale_factor, sample_size='BILINEAR')
+
+        training_data_loader = DataLoader(dataset=train_set, batch_size=args.batchSize, shuffle=True)
+        testing_data_loader  = DataLoader(dataset=test_set,  batch_size=args.testBatchSize, shuffle=False)
+    else:
+        train_set            = data.get_data(dataset_name=args.dataset, data_type='train', upscale_factor=args.upscale_factor)
+        test_set             = data.get_data(dataset_name=args.dataset, data_type='test',  upscale_factor=args.upscale_factor)
+
+        training_data_loader = DataLoader(dataset=train_set, batch_size=args.batchSize, shuffle=True)
+        testing_data_loader  = DataLoader(dataset=test_set,  batch_size=args.testBatchSize, shuffle=False)
 
     if args.model == 'sub':
         model = SubPixelTrainer(args, training_data_loader, testing_data_loader)
@@ -59,8 +69,6 @@ def main():
         model = SRCNNTrainer(args, training_data_loader, testing_data_loader)
     elif args.model == 'srcnnt':
         model = SRCNNTTrainer(args, training_data_loader, testing_data_loader)
-    elif args.model == 'carn':
-        model = SRCNNTrainer(args, training_data_loader, testing_data_loader)
     elif args.model == 'vdsr':
         model = VDSRTrainer(args, training_data_loader, testing_data_loader)
     elif args.model == 'edsr':
@@ -69,6 +77,8 @@ def main():
         model = FSRCNNTrainer(args, training_data_loader, testing_data_loader)
     elif args.model == 'drcn':
         model = DRCNTrainer(args, training_data_loader, testing_data_loader)
+    elif args.model == 'carn':
+        model = CARNTrainer(args, training_data_loader, testing_data_loader)
     elif args.model == 'srgan':
         model = SRGANTrainer(args, training_data_loader, testing_data_loader)
     elif args.model == 'dbpn':

@@ -2,38 +2,38 @@
 
 This git cloned from https://github.com/icpm/super-resolution change some modifications.
 
-[x] Add CARN method
-[x] Add different optimization method
-[x] Log the result
-[ ] 
+- [x] Add CARN method
+- [x] Add different optimization method
+- [x] Log the checkppoints and _logs
+- [ ] Log the result
 
 ### Optimizer
-- LAMB
-- SGD
 - ADAM
 - AdamSparse
 - Adamax
-- asgd
 - Adadelta
-- adagrad
-- rmsprop
-- rprop
+- Adagrad
+- ASGD
+- LAMB
+- RProp
+- SGD
+- RMSprop
 
 ### Single Image Super Resolution Methods
-- SubPixelCNN
-- SRCNN
-- SRCNNT
-- CARN
-- VDSR
-- EDST
-- FSRCNN
-- DRCN
-- SRGAN
-- DBPN
-- MemNet
+- [X] SubPixelCNN
+- [X] SRCNN
+- [X] SRCNNT
+- [X] VDSR
+- [X] EDSR
+- [X] FSRCNN
+- [X] DRCN `batchsize should be small, batchsize=4`
+- [ ] SRGAN `change save checkpoint path patterns`
+- [X] DBPN `batchsize should be small, batchsize=1`
+- [X] MemNet
+- [ ] CARN
 
 ##### Mount google drive install basic super resolution package
-```python
+```
 import os
 from google.colab import drive
 drive.mount('/content/gdrive/')
@@ -45,13 +45,14 @@ os.chdir('/content/gdrive/My Drive/Projects/master-code')
 ```
 
 ##### Run train all python script
-```python
+```
 os.chdir('/content/gdrive/My Drive/Projects/master-code/basic-super-resolution')
-!python train_all.py --logprefix test_BSDS300_4x -uf 4 --dataset BSDS300 --batchSize 64 --testBatchSize 64 --nEpochs 1000 --iter 3
+
+!python train_all.py --logprefix test_BSDS300_2x -uf 2 --dataset BSDS300 --batchSize 128 --testBatchSize 128 --nEpochs 1500 --iter 3
 ```
 
 #### Train Model
-`python train.py --logprefix testmodel -uf 4 --dataset BSDS300 --batchSize 16 --testBatchSize 8 --nEpochs 1 --model srgan`
+`python train.py --logprefix testmodel -uf 4 --dataset BSDS300 --batchSize 16 --testBatchSize 8 --nEpochs 1 --model srcnnt`
 
 `python train.py --logprefix test1epoch -uf 4 --dataset COCO --batchSize 16 --testBatchSize 8 --nEpochs 1 --model srcnnt`
 

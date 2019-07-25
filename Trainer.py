@@ -33,10 +33,11 @@ class Trainer(object):
         self.results = collections.defaultdict(list)
 
     def save_model(self, epoch, avg_error, avg_psnr):
+        print(f"Error: {avg_error}, PSNR: {avg_psnr}")
         model_out_path = os.path.join(self.save_path,f"{avg_psnr}_{avg_error}_{epoch}.pth")
         torch.save(self.model, model_out_path)
         with open(os.path.join(self.save_path, '_log.csv'), 'a') as stream:
-            stream.writelines(f"{self.config.model}, {self.optimizer.__class__.__name__}, {self.config.nEpochs}, {epoch}, {avg_error}, {avg_psnr}"+os.linesep)
+            stream.writelines(f"{self.config.model}, {self.optimizer.__class__.__name__}, {self.config.nEpochs}, {epoch}, {avg_error[0]}, {avg_psnr[0]}, {avg_error[1]}, {avg_psnr[1]}"+os.linesep)
             stream.close()
 
     def checkpoint_path(self, _type=''):
@@ -64,9 +65,15 @@ class Trainer(object):
 
     def set_optimizer(self, _type='adam'):
         # Set parameters
+        passed_type = _type
         _type = self.config.optim
 
-        parameters = {'params': self.model.parameters(),'lr': self.lr}
+        parameters = {}
+        if passed_type == 'gan':
+            pass
+            parameters = {'params': self.netG.parameters(),'lr': self.lr}
+        else:
+            parameters = {'params': self.model.parameters(),'lr': self.lr}
         # if self.config.momentum > 0 and (_type not in ('sparseadam') or self.config.model not in ('edsr','drcn')):
             # parameters.update({'momentum': self.config.momentum})
         if self.config.weight_decay > 0 and _type not in ('sparseadam','rprop'):

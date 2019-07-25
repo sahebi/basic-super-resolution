@@ -27,7 +27,7 @@ class MEMNETTrainer(Trainer):
         self.testing_loader = testing_loader
 
     def build_model(self):
-        self.model = Net(in_channels=3, channels=3, num_memblock=3, num_resblock=3).to(self.device)
+        self.model = Net(in_channels=1, channels=3, num_memblock=3, num_resblock=3).to(self.device)
         self.criterion = torch.nn.MSELoss()
         torch.manual_seed(self.seed)
 
@@ -36,9 +36,7 @@ class MEMNETTrainer(Trainer):
             cudnn.benchmark = True
             self.criterion.cuda()
 
-        self.set_optimizer() #==> Add
-        self.scheduler = torch.optim.lr_scheduler.MultiStepLR(self.optimizer, milestones=[50, 75, 100], gamma=0.5)
-        self.save_path = self.checkpoint_path() #==> Add
+        self.set_optimizer()
 
     def train(self):
         self.model.train()
@@ -50,10 +48,10 @@ class MEMNETTrainer(Trainer):
             train_loss += loss.item()
             loss.backward()
             self.optimizer.step()
-            progress_bar(batch_num, len(self.training_loader), 'Loss: %.4f' % (train_loss / (batch_num + 1)))
+            total_time = progress_bar(batch_num, len(self.training_loader), 'Loss: %.4f' % (train_loss / (batch_num + 1)))
 
         avg_loss = train_loss / len(self.training_loader)
-        return avg_loss
+        return [avg_loss, total_time]
 
     def test(self):
         self.model.eval()
@@ -66,10 +64,10 @@ class MEMNETTrainer(Trainer):
                 mse = self.criterion(prediction, target)
                 psnr = 10 * log10(1 / mse.item())
                 avg_psnr += psnr
-                progress_bar(batch_num, len(self.testing_loader), 'PSNR: %.4f' % (avg_psnr / (batch_num + 1)))
+                total_time = progress_bar(batch_num, len(self.testing_loader), 'PSNR: %.4f' % (avg_psnr / (batch_num + 1)))
 
         avg_psnr = avg_psnr / len(self.testing_loader)
-        return avg_psnr
+        return [avg_psnr, total_time]
 
     def run(self):
         self.build_model()

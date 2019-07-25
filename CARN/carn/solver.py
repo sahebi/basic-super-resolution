@@ -15,8 +15,7 @@ class Solver():
         if cfg.scale > 0:
             self.refiner = model(scale=cfg.scale,group=cfg.group)
         else:
-            self.refiner = model(multi_scale=True, 
-                                 group=cfg.group)
+            self.refiner = model(multi_scale=True, group=cfg.group)
         
         if cfg.loss_fn in ["MSE"]: 
             self.loss_fn = nn.MSELoss()
@@ -29,14 +28,8 @@ class Solver():
             filter(lambda p: p.requires_grad, self.refiner.parameters()), 
             cfg.lr)
         
-        self.train_data = TrainDataset(cfg.train_data_path, 
-                                       scale=cfg.scale, 
-                                       size=cfg.patch_size)
-        self.train_loader = DataLoader(self.train_data,
-                                       batch_size=cfg.batch_size,
-                                       num_workers=1,
-                                       shuffle=True, drop_last=True)
-        
+        self.train_data = TrainDataset(cfg.train_data_path, scale=cfg.scale, size=cfg.patch_size)
+        self.train_loader = DataLoader(self.train_data, batch_size=cfg.batch_size, num_workers=1, shuffle=True, drop_last=True)
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.refiner = self.refiner.to(self.device)

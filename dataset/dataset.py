@@ -9,14 +9,14 @@ def is_image_file(filename):
     return any(filename.endswith(extension) for extension in [".png", ".jpg", ".jpeg"])
 
 
-def load_img(filepath):
-    img = Image.open(filepath).convert('YCbCr')
+def load_img(filepath, color_system='YCbCr'):
+    img = Image.open(filepath).convert(color_system)
     y, _, _ = img.split()
     return y
 
 
 class DatasetFromFolder(data.Dataset):
-    def __init__(self, image_dir, input_transform=None, target_transform=None):
+    def __init__(self, image_dir, input_transform=None, target_transform=None, color_system='YCbCr'):
         super(DatasetFromFolder, self).__init__()
         self.image_filenames = [join(image_dir, x) for x in listdir(image_dir) if is_image_file(x)]
 
